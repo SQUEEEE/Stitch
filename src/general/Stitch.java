@@ -9,22 +9,18 @@ public class Stitch{
 	int row;
 	int stitch;
 	String draw;
+	String tool;
 	
-	public Stitch(int r, int s, String d, HBox h){
+	public Stitch(int r, int s, String d, String t, HBox h){
 		
 		this.row = r;
 		this.stitch = s;
 		this.draw = d;
+		this.tool = t;
 		this.button = new Button(this.draw);
 		
 		
-		this.button.connect(new Button.Clicked() {
-
-			public void onClicked(Button b) {
-				System.out.println("Klickad");
-				//b.setLabel("x");
-			}
-		});
+		this.button.connect(new StitchHandler(this.row, this.stitch, this.draw, this.tool));
 		
 		h.add(this.button);
 		
@@ -49,6 +45,11 @@ public class Stitch{
 	
 	public void changeDraw(String draw){
 		this.draw = draw;
+	}
+	
+	public void changeTool(String tool){
+		this.tool = tool;
+		this.button.connect(new StitchHandler(this.row, this.stitch, this.draw, this.tool));
 	}
 
 }

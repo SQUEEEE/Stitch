@@ -26,6 +26,8 @@ import testing.Pattern;
 public class Stitchtest extends Window{
 	
 	Stitch[] pattern;
+	public String tool;
+	int nostitches;
 	
 	public Stitchtest(int rows, int stitches){
 		setTitle("Stitch");
@@ -51,19 +53,43 @@ public class Stitchtest extends Window{
 		HBox[] hboxes = new HBox[rows];
 		Alignment[] haligns = new Alignment[rows];
 		
+		nostitches = stitches*rows;
+		
 		final Stitch[] pattern = new Stitch[stitches*rows];
 		int stitchnr = 0;
+		tool = "-";
 	
 		for(int i=0;i<rows;i++){
 			hboxes[i] = new HBox(true, 0);
 			haligns[i] = new Alignment(0, 0, 0, 0);
 			for(int j=0;j<stitches;j++){
-				pattern[stitchnr] = new Stitch(i, j, "      ", hboxes[i]);
+				pattern[stitchnr] = new Stitch(i, j, "      ", tool, hboxes[i]);
 				stitchnr++;
 			}
 			haligns[i].add(hboxes[i]);
 			vbox.packStart(haligns[i], false, false, 2);
 		}
+		
+		Button toolButton = new Button("x");
+		toolButton.connect(new Button.Clicked(){
+			public void onClicked(Button b){
+				toolChange(pattern, nostitches, b.getLabel());
+			}
+		});
+		
+		Button toolButton2 = new Button("o");
+		toolButton2.connect(new Button.Clicked(){
+			public void onClicked(Button b){
+				toolChange(pattern, nostitches, b.getLabel());
+			}
+		});
+		
+		HBox hbox = new HBox(false, 3);
+		hbox.add(toolButton);
+		hbox.add(toolButton2);
+		Alignment halign = new Alignment(1, 0, 0, 0);
+		halign.add(hbox);
+		vbox.packStart(halign, false, false, 2);
 		
         add(vbox);
         
@@ -86,56 +112,21 @@ public class Stitchtest extends Window{
 		return s;
 	}
 	
-	public static void ask(Stitch [] pattern, int nostitches){
-		
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int changeRow = 0;
-		int changeStitch = 0;
-		String draw = null;
-		String line = null;
-		
-		while(true){
-
-			System.out.print("Vilken rad vill du ändra på? ");
-			try{
-				line = br.readLine();
-				changeRow = Integer.parseInt(line);
-
-			}catch(IOException e){
-				System.out.println("Error");
-				System.exit(1);
-			}
-			System.out.print("Vilken maska på rad " + changeRow + " vill du ändra på?  ");
-			try{
-				line = br.readLine();
-				changeStitch = Integer.parseInt(line);
-			}catch(IOException e){
-				System.exit(1);
-			}
-		
-			System.out.print("Vad vill du ändra maskan till? ");
-			try{
-				draw = br.readLine();
-			
-			}catch(IOException e){
-				System.exit(1);
-			}
-		
-			System.out.println("Du ville ändra på rad " + changeRow + ", maska " + changeStitch + " till " + draw);
-			Stitch s = findStitch(pattern, changeRow, changeStitch, nostitches);
-			s.changeDraw(draw);
-		}
-	}
-	
 	public Stitch[] getPattern(){
 		return this.pattern;
+	}
+	
+	public void toolChange(Stitch[] pattern, int nostitches, String tool){
+		for(int i=0;i<nostitches;i++){
+			pattern[i].changeTool(tool); 
+		}
+		System.out.println("Tool changed");
 	}
 	
 	public static void main(String[] args){
 		
 		Gtk.init(args);
-		Stitchtest stitchtest = new Stitchtest(4, 10);
+		new Stitchtest(4, 10);
 		Gtk.main();
-		ask(stitchtest.getPattern(), 40);
 	}
 }

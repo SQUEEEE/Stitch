@@ -1,10 +1,10 @@
 package testing;
 
-import java.io.*;
+import java.util.Scanner;
 
 public class Test {
 	public static void main(String[] args){
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		Scanner in = new Scanner(System.in);
 		
 		
 		int row = 3;
@@ -33,29 +33,13 @@ public class Test {
 		while(true){
 
 			System.out.print("Vilken rad vill du ändra på? ");
-			try{
-				line = br.readLine();
-				changeRow = Integer.parseInt(line);
-
-			}catch(IOException e){
-				System.out.println("Error");
-				System.exit(1);
-			}
+			changeRow = in.nextInt();
+	
 			System.out.print("Vilken maska på rad " + changeRow + " vill du ändra på?  ");
-			try{
-				line = br.readLine();
-				changeStitch = Integer.parseInt(line);
-			}catch(IOException e){
-				System.exit(1);
-			}
+			changeStitch = in.nextInt();
 		
 			System.out.print("Vad vill du ändra maskan till? ");
-			try{
-				draw = br.readLine();
-			
-			}catch(IOException e){
-				System.exit(1);
-			}
+			draw = in.next();
 		
 			System.out.println("Du ville ändra på rad " + changeRow + ", maska " + changeStitch + " till " + draw);
 			Pattern s = findStitch(pattern, changeRow, changeStitch, row*stitches);
