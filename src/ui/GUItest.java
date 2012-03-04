@@ -6,6 +6,7 @@ import org.gnome.gtk.Alignment;
 import org.gnome.gtk.Button;
 import org.gnome.gtk.CheckMenuItem;
 import org.gnome.gtk.Gtk;
+import org.gnome.gtk.Grid;
 import org.gnome.gtk.HBox;
 import org.gnome.gtk.Label;
 import org.gnome.gtk.Menu;
@@ -23,7 +24,8 @@ public class GUItest extends Window{
 	private Label label;
 	private String tool;
 	private String drawlabel;
-	private Button draw;
+	private Grid grid;	
+
 
 	
 	public GUItest(){
@@ -94,9 +96,14 @@ public class GUItest extends Window{
 		    buttons[i].setLabel("");
 			buttons[i].connect(new Button.Clicked(){
 				public void onClicked(Button source){
-					drawlabel = tool;
-					System.out.println("yay");
-					source.setLabel(drawlabel);
+					if(tool != null){
+						drawlabel = tool;
+						System.out.println("yay");
+						source.setLabel(drawlabel);
+					}
+					else{
+						System.out.println("Nej");
+					}
 				}
 			});
 			hbox.add(buttons[i]);
@@ -144,8 +151,8 @@ public class GUItest extends Window{
 		
 		
 		
-		Alignment halign = new Alignment(1, 0, 0, 0);
-		Alignment halign2 = new Alignment(1, 0, 0, 0);
+		Alignment halign = new Alignment(1, 0, 1, 0);
+		Alignment halign2 = new Alignment(1, 1, 0, 0);
         halign.add(hbox);
         halign2.add(hbox2);
         
